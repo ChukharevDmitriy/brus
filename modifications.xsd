@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="https://schema.brusnika.tech/document-management/completions/modifications"
+  xmlns:cds="https://schema.brusnika.tech/document-management/completions/std/completion-document-std"
+  xmlns:ctt="https://schema.brusnika.tech/document-management/completions/contract"
+  xmlns:clc="https://schema.brusnika.tech/document-management/completions/calculation"
+  xmlns:crt="https://schema.brusnika.tech/document-management/completions/certificate"
+  xmlns:rpt="https://schema.brusnika.tech/document-management/completions/period-report"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="https://schema.brusnika.tech/document-management/completions/modifications"
+  elementFormDefault="qualified" version="0.0.3">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="ru"> Добавление/изменение документов производственной цепочки </xs:documentation>
+  </xs:annotation>
+
+  <xs:import
+    namespace="https://schema.brusnika.tech/document-management/completions/std/completion-document-std"
+    schemaLocation="./std/completion-document-std.xsd">
+    <xs:annotation>
+      <xs:documentation xml:lang="ru">Стандартная схема по закрывающим документам ПЦ в ЕДО</xs:documentation>
+    </xs:annotation>
+  </xs:import>
+
+  <xs:import
+    namespace="https://schema.brusnika.tech/document-management/completions/contract"
+    schemaLocation="./contract.xsd">
+    <xs:annotation>
+      <xs:documentation xml:lang="ru">Схема по договору</xs:documentation>
+    </xs:annotation>
+  </xs:import>
+
+  <xs:import
+    namespace="https://schema.brusnika.tech/document-management/completions/calculation"
+    schemaLocation="./calculation.xsd">
+    <xs:annotation>
+      <xs:documentation xml:lang="ru">Схема по КЛК</xs:documentation>
+    </xs:annotation>
+  </xs:import>
+
+  <xs:import
+    namespace="https://schema.brusnika.tech/document-management/completions/certificate"
+    schemaLocation="./certificate.xsd">
+    <xs:annotation>
+      <xs:documentation xml:lang="ru">Схема по КС-2</xs:documentation>
+    </xs:annotation>
+  </xs:import>
+
+  <xs:import
+    namespace="https://schema.brusnika.tech/document-management/completions/period-report"
+    schemaLocation="./period-report.xsd">
+    <xs:annotation>
+      <xs:documentation xml:lang="ru">Схема по КС-3</xs:documentation>
+    </xs:annotation>
+  </xs:import>
+
+  <xs:attributeGroup name="schema-version-mdn">
+    <xs:attribute name="schema-version-mdn" type="tns:version" fixed="0.0.3" use="required" />
+    <xs:attributeGroup ref="ctt:schema-version-ctt" />
+    <xs:attributeGroup ref="clc:schema-version-clc" />
+    <xs:attributeGroup ref="crt:schema-version-crt" />
+    <xs:attributeGroup ref="rpt:schema-version-rpt" />
+  </xs:attributeGroup>
+
+  <xs:group name="Document"> <!-- Документ -->
+    <xs:annotation>
+      <xs:documentation xml:lang="ru">Документ</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice>
+        <xs:element name="construction-contract" type="ctt:ConstructionContract">
+          <xs:annotation>
+            <xs:documentation>Договор подряда на СМР</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="general-construction-contract" type="ctt:GeneralConstructionContract">
+          <xs:annotation>
+            <xs:documentation>Договор генподряда на СМР</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="construction-additional-agreement"
+          type="ctt:ConstructionAdditionalAgreement">
+          <xs:annotation>
+            <xs:documentation>Дополнительное соглашение к договору СМР</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="calculation" type="clc:Calculation">
+          <xs:annotation>
+            <xs:documentation>КЛК</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="certificate" type="crt:Certificate">
+          <xs:annotation>
+            <xs:documentation>Акт КС-2</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="period-report" type="rpt:PeriodReport">
+          <xs:annotation>
+            <xs:documentation>Справка КС-3</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:simpleType name="version">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d+\.\d+\.\d+" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
